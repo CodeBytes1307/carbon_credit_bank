@@ -324,5 +324,5 @@ This project is intended for educational/demo use. Before production:
 
 ## License
 
-Use your preferred license (MIT/Apache-2.0/etc.) before publishing publicly.
+Use your preferred license- (MIT/Apache-2.0/etc.) before publishing publicly.
 
