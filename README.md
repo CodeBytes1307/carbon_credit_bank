@@ -1,6 +1,6 @@
 # Carbon Credit Bank
 
-A DBMS mini-project that simulates a carbon credit trading platform where companies can:
+A DBMS mini-project that simulates a carbon credit trading platform  where companies can:
 - create and manage organizational accounts,
 - maintain wallet balances,
 - buy and sell credit batches,
@@ -12,7 +12,7 @@ The application is built with Flask + PostgreSQL and follows a server-rendered M
 
 ## Features
 
-- Company login with session-based authentication
+- Company login with session-based  authentication
 - Company directory dashboard
 - Portfolio view (wallet + owned credit batches)
 - Buy credits workflow with transactional wallet and ownership updates
