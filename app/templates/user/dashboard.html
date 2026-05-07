@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Companies — Carbon Credit Bank{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="page-header">
+        <div>
+            <h1>Companies</h1>
+            <p>Directory of registered organisations on the platform.</p>
+        </div>
+    </header>
+
+    <div class="table-wrapper">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Sector</th>
+                    <th>Country</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for company in companies %}
+                <tr>
+                    <td data-label="Name"><strong style="color:var(--gray-900);">{{ company.name }}</strong></td>
+                    <td data-label="Sector">{{ company.sector }}</td>
+                    <td data-label="Country">{{ company.country }}</td>
+                    <td data-label="Status"><span class="badge badge-{{ company.status|lower }}">{{ company.status }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

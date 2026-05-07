@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Companies — Admin{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Company Management</h1>
+            <p class="text-muted mb-0">Suspend, reactivate, or dissolve companies (dissolve requires zero balance and credits).</p>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Sector</th>
+                <th>Country</th>
+                <th>Status</th>
+                <th>Wallet</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for c in companies %}
+                <tr>
+                    <td data-label="Name"><strong style="color:var(--gray-900);">{{ c.name }}</strong></td>
+                    <td data-label="Sector">{{ c.sector or '—' }}</td>
+                    <td data-label="Country">{{ c.country }}</td>
+                    <td data-label="Status">
+                        <span class="badge {% if c.status == 'ACTIVE' %}badge-available{% elif c.status == 'SUSPENDED' %}badge-pending{% else %}badge-failed{% endif %}">
+                            {{ c.status }}
+                        </span>
+                    </td>
+                    <td data-label="Wallet">{{ "%.2f"|format(c.balance|float) }} <span style="color:var(--gray-500);">{{ c.currency }}</span></td>
+                    <td data-label="Actions">
+                        <div class="action-row">
+                            <form method="post">
+                                <input type="hidden" name="company_id" value="{{ c.company_id }}">
+                                <input type="hidden" name="action" value="SUSPEND">
+                                <button class="btn btn-sm btn-danger" type="submit">Suspend</button>
+                            </form>
+                            <form method="post">
+                                <input type="hidden" name="company_id" value="{{ c.company_id }}">
+                                <input type="hidden" name="action" value="REACTIVATE">
+                                <button class="btn btn-sm btn-secondary" type="submit">Reactivate</button>
+                            </form>
+                            <form method="post">
+                                <input type="hidden" name="company_id" value="{{ c.company_id }}">
+                                <input type="hidden" name="action" value="DISSOLVE">
+                                <button class="btn btn-sm btn-outline" type="submit">Dissolve</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="6" class="empty-msg">No companies found.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

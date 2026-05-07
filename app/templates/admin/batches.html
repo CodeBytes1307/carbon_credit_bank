@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Credit Batches — Admin{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Credit Batch Registry</h1>
+            <p class="text-muted mb-0">View all batches and mark expired batches if needed.</p>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>Batch</th>
+                <th>Owner</th>
+                <th>Project</th>
+                <th>Registry</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Expiry</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for b in batches %}
+                <tr>
+                    <td data-label="Batch"><code style="color:var(--gray-500); font-size:.8125rem;">{{ b.batch_id }}</code></td>
+                    <td data-label="Owner">{{ b.owner_name }}</td>
+                    <td data-label="Project"><strong style="color:var(--gray-900);">{{ b.project_name }}</strong> <span style="color:var(--gray-500);">({{ b.project_type }})</span></td>
+                    <td data-label="Registry">{{ b.registry_name }}</td>
+                    <td data-label="Qty">{{ b.quantity_available }}</td>
+                    <td data-label="Price">${{ "%.2f"|format(b.unit_price|float) }}</td>
+                    <td data-label="Expiry">{{ b.expiry_date or '—' }}</td>
+                    <td data-label="Status">
+                        <span class="badge {% if b.status == 'AVAILABLE' %}badge-available{% elif b.status == 'PARTIALLY_SOLD' %}badge-pending{% elif b.status == 'SOLD_OUT' %}badge-failed{% else %}badge-failed{% endif %}">
+                            {{ b.status }}
+                        </span>
+                    </td>
+                    <td data-label="Action">
+                        <form method="post">
+                            <input type="hidden" name="batch_id" value="{{ b.batch_id }}">
+                            <input type="hidden" name="action" value="MARK_EXPIRED">
+                            <button type="submit" class="btn btn-sm btn-outline">Mark Expired</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="9" class="empty-msg">No batches found.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

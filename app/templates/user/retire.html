@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Retire Credits — Carbon Credit Bank{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width:640px;">
+    <header class="page-header">
+        <div>
+            <h1>Retire credits</h1>
+            <p>Permanently retire credits to claim their environmental benefit.</p>
+        </div>
+    </header>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                <div class="form-group">
+                    <label for="batch">Select batch</label>
+                    <select name="batch_id" id="batch" class="form-control">
+                        {% for batch in owned_batches %}
+                        <option value="{{ batch.batch_id }}">
+                            {{ batch.project_name }} — {{ batch.quantity_available }} available
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity to retire</label>
+                    <input type="number" name="quantity" id="quantity" min="1" max="{{ owned_batches[0].quantity_available if owned_batches else 1 }}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="reason">Retirement reason</label>
+                    <select name="retirement_reason" id="reason" class="form-control">
+                        <option value="COMPLIANCE">Compliance</option>
+                        <option value="VOLUNTARY">Voluntary</option>
+                        <option value="OFFSET">Offset</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn buy-btn btn-block btn-lg">Retire credits</button>
+            </form>
+            {% if success %}<div class="success">{{ success }}</div>{% endif %}
+            {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

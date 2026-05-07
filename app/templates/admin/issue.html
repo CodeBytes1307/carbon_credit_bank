@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Issue Credits — Admin{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width:880px;">
+    <div class="page-header">
+        <div>
+            <h1>Issue New Credit Batch</h1>
+            <p class="text-muted mb-0">Create new credits (ISSUANCE) and assign them to a company.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+            {% if success %}<div class="alert alert-success">{{ success }}</div>{% endif %}
+
+            <form method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Project</label>
+                        <select name="project_id" required>
+                            {% for p in projects %}
+                                <option value="{{ p[0] }}">{{ p[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Registry</label>
+                        <select name="registry_id" required>
+                            {% for r in registries %}
+                                <option value="{{ r[0] }}">{{ r[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Assign to Company</label>
+                        <select name="owner_company_id" required>
+                            {% for c in companies %}
+                                <option value="{{ c[0] }}">{{ c[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Certification Standard</label>
+                        <input type="text" name="certification_standard" placeholder="VCS / Gold Standard / ACR">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" name="quantity" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Unit Price</label>
+                        <input type="number" name="unit_price" step="0.0001" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Vintage Year</label>
+                        <input type="date" name="vintage_year" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Expiry Date <span style="color:var(--gray-400); font-weight:400;">(optional)</span></label>
+                        <input type="date" name="expiry_date">
+                    </div>
+                </div>
+
+                <div class="action-row" style="margin-top: var(--space-4);">
+                    <button type="submit" class="btn btn-primary">Issue Credits</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

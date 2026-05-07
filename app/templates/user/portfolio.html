@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Portfolio — Carbon Credit Bank{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="page-header">
+        <div>
+            <h1>Portfolio</h1>
+            <p>Your wallet balance and owned credit batches.</p>
+        </div>
+    </header>
+
+    <div class="wallet-card">
+        <h4>{{ wallet.balance }} <span style="font-size:1rem; font-weight:500; opacity:.85;">{{ wallet.currency }}</span></h4>
+    </div>
+
+    <h3 style="margin-top:0;">Owned credit batches</h3>
+
+    <div class="table-wrapper">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Batch ID</th>
+                    <th>Project</th>
+                    <th>Quantity</th>
+                    <th>Available</th>
+                    <th>Status</th>
+                    <th>Expiry</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for batch in batches %}
+                <tr>
+                    <td data-label="Batch ID"><code style="color:var(--gray-500); font-size:.8125rem;">{{ batch.batch_id }}</code></td>
+                    <td data-label="Project"><strong style="color:var(--gray-900);">{{ batch.project_name }}</strong></td>
+                    <td data-label="Quantity">{{ batch.quantity }}</td>
+                    <td data-label="Available">{{ batch.quantity_available }}</td>
+                    <td data-label="Status"><span class="badge badge-{{ batch.status|lower }}">{{ batch.status }}</span></td>
+                    <td data-label="Expiry">{{ batch.expiry_date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

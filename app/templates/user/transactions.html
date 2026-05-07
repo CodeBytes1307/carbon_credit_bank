@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Transactions — Carbon Credit Bank{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="page-header">
+        <div>
+            <h1>Transactions</h1>
+            <p>A complete history of your activity on the platform.</p>
+        </div>
+    </header>
+
+    <div class="table-wrapper">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Batch</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for txn in transactions %}
+                <tr>
+                    <td data-label="ID"><code style="color:var(--gray-500); font-size:.8125rem;">{{ txn.transaction_id }}</code></td>
+                    <td data-label="Type"><strong style="color:var(--gray-900);">{{ txn.transaction_type }}</strong></td>
+                    <td data-label="Batch">{{ txn.batch_id }}</td>
+                    <td data-label="Quantity">{{ txn.quantity }}</td>
+                    <td data-label="Amount">{{ txn.total_amount }}</td>
+                    <td data-label="Status"><span class="badge badge-{{ txn.status|lower }}">{{ txn.status }}</span></td>
+                    <td data-label="Date" style="color:var(--gray-500);">{{ txn.timestamp }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

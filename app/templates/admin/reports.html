@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Reports — Admin{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Reports</h1>
+            <p class="text-muted mb-0">Aggregate analytics across the exchange.</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top:0;">Credits Traded per Company</h3>
+    <div class="table-wrapper">
+        <table>
+            <thead><tr><th>Company</th><th>Total Quantity</th></tr></thead>
+            <tbody>
+            {% for row in data.traded_per_company %}
+                <tr><td data-label="Company"><strong style="color:var(--gray-900);">{{ row[0] }}</strong></td><td data-label="Total Quantity">{{ row[1] }}</td></tr>
+            {% else %}
+                <tr><td colspan="2" class="empty-msg">No data.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Average Price by Project Type</h3>
+    <div class="table-wrapper">
+        <table>
+            <thead><tr><th>Project Type</th><th>Avg Unit Price</th></tr></thead>
+            <tbody>
+            {% for row in data.avg_price_by_type %}
+                <tr><td data-label="Project Type"><strong style="color:var(--gray-900);">{{ row[0] }}</strong></td><td data-label="Avg Unit Price">${{ "%.4f"|format(row[1]|float) }}</td></tr>
+            {% else %}
+                <tr><td colspan="2" class="empty-msg">No data.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Most Active Traders</h3>
+    <div class="table-wrapper">
+        <table>
+            <thead><tr><th>Company</th><th>Transactions</th></tr></thead>
+            <tbody>
+            {% for row in data.most_active %}
+                <tr><td data-label="Company"><strong style="color:var(--gray-900);">{{ row[0] }}</strong></td><td data-label="Transactions">{{ row[1] }}</td></tr>
+            {% else %}
+                <tr><td colspan="2" class="empty-msg">No data.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Credits Expiring Within 30 Days</h3>
+    <div class="table-wrapper">
+        <table>
+            <thead><tr><th>Batch</th><th>Owner</th><th>Project</th><th>Qty</th><th>Expiry</th><th>Status</th></tr></thead>
+            <tbody>
+            {% for row in data.expiring_soon %}
+                <tr>
+                    <td data-label="Batch"><code style="color:var(--gray-500); font-size:.8125rem;">{{ row[0] }}</code></td>
+                    <td data-label="Owner">{{ row[1] }}</td>
+                    <td data-label="Project">{{ row[2] }}</td>
+                    <td data-label="Qty">{{ row[3] }}</td>
+                    <td data-label="Expiry">{{ row[4] }}</td>
+                    <td data-label="Status"><span class="badge badge-pending">{{ row[5] }}</span></td>
+                </tr>
+            {% else %}
+                <tr><td colspan="6" class="empty-msg">No expiring batches.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Credits Retired per Company</h3>
+    <div class="table-wrapper">
+        <table>
+            <thead><tr><th>Company</th><th>Reason</th><th>Quantity</th></tr></thead>
+            <tbody>
+            {% for row in data.retired_breakdown %}
+                <tr><td data-label="Company"><strong style="color:var(--gray-900);">{{ row[0] }}</strong></td><td data-label="Reason">{{ row[1] }}</td><td data-label="Quantity">{{ row[2] }}</td></tr>
+            {% else %}
+                <tr><td colspan="3" class="empty-msg">No retirement records.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

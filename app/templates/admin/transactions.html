@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}All Transactions — Admin{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>All Transactions</h1>
+            <p class="text-muted mb-0">System-wide transaction ledger with simple filters.</p>
+        </div>
+    </div>
+
+    <div class="card mb-6">
+        <div class="card-body">
+            <form method="get">
+                <div class="grid grid-cols-3" style="margin-bottom: var(--space-4);">
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>Type</label>
+                        <input type="text" name="type" value="{{ filters.type }}" placeholder="BUY / SELL / ISSUANCE / RETIREMENT">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>Status</label>
+                        <input type="text" name="status" value="{{ filters.status }}" placeholder="COMPLETED / PENDING / FAILED">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>Date Range</label>
+                        <div class="form-row">
+                            <input type="date" name="start" value="{{ filters.start }}">
+                            <input type="date" name="end" value="{{ filters.end }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="action-row">
+                    <button type="submit" class="btn btn-primary btn-sm">Apply Filters</button>
+                    <a class="btn btn-secondary btn-sm" href="{{ url_for('admin.all_transactions') }}">Clear</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Buyer</th>
+                <th>Seller</th>
+                <th>Project</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Timestamp</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for t in transactions %}
+                <tr>
+                    <td data-label="ID"><code style="color:var(--gray-500); font-size:.8125rem;">{{ t.transaction_id }}</code></td>
+                    <td data-label="Buyer">{{ t.buyer_name or '—' }}</td>
+                    <td data-label="Seller">{{ t.seller_name or '—' }}</td>
+                    <td data-label="Project"><strong style="color:var(--gray-900);">{{ t.project_name }}</strong></td>
+                    <td data-label="Qty">{{ t.quantity }}</td>
+                    <td data-label="Total">${{ "%.2f"|format(t.total_amount|float) }}</td>
+                    <td data-label="Type">{{ t.transaction_type }}</td>
+                    <td data-label="Status">
+                        <span class="badge {% if t.status == 'COMPLETED' %}badge-completed{% elif t.status == 'PENDING' %}badge-pending{% else %}badge-failed{% endif %}">
+                            {{ t.status }}
+                        </span>
+                    </td>
+                    <td data-label="Timestamp" style="color:var(--gray-500);">{{ t.timestamp }}</td>
+                </tr>
+            {% else %}
+                <tr><td colspan="9" class="empty-msg">No transactions found.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

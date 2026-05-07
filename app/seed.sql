@@ -10,7 +10,8 @@ INSERT INTO company (name, registration_number, country, sector, status) VALUES
 ('SolarWave Energy', 'SWE-002', 'India', 'ENERGY', 'ACTIVE'),
 ('EcoForest Ltd', 'EFL-003', 'Brazil', 'FORESTRY', 'ACTIVE'),
 ('CleanAir Corp', 'CAC-004', 'USA', 'TRANSPORT', 'ACTIVE'),
-('BlueSky Aviation', 'BSA-005', 'UK', 'AVIATION', 'ACTIVE');
+('BlueSky Aviation', 'BSA-005', 'UK', 'AVIATION', 'ACTIVE'),
+('Platform Admin', 'ADMIN-000', 'Global', 'ADMIN', 'ACTIVE');
 
 -- 3. Wallets (one per company)
 INSERT INTO wallet (company_id, balance, currency)
@@ -102,10 +103,51 @@ FROM project p, company c
 WHERE p.name = 'Maharashtra Methane Capture'
 AND c.registration_number = 'GEI-001';
 
+-- 5b. Additional credit batches for BlueSky Aviation, CleanAir Corp, EcoForest Ltd
+INSERT INTO credit_batch (
+    project_id, registry_id, owner_company_id,
+    quantity, quantity_available, unit_price,
+    certification_standard, vintage_year, expiry_date, status
+)
+SELECT
+    p.project_id, p.registry_id, c.company_id,
+    3500, 3500, 14.5000,
+    'VCS', '2023-06-01', '2028-05-31', 'AVAILABLE'
+FROM project p, company c
+WHERE p.name = 'Amazon Reforestation Initiative'
+AND c.registration_number = 'BSA-005';
+
+INSERT INTO credit_batch (
+    project_id, registry_id, owner_company_id,
+    quantity, quantity_available, unit_price,
+    certification_standard, vintage_year, expiry_date, status
+)
+SELECT
+    p.project_id, p.registry_id, c.company_id,
+    2800, 2800, 16.0000,
+    'Gold Standard', '2023-03-01', '2027-02-28', 'AVAILABLE'
+FROM project p, company c
+WHERE p.name = 'Rajasthan Solar Farm'
+AND c.registration_number = 'CAC-004';
+
+INSERT INTO credit_batch (
+    project_id, registry_id, owner_company_id,
+    quantity, quantity_available, unit_price,
+    certification_standard, vintage_year, expiry_date, status
+)
+SELECT
+    p.project_id, p.registry_id, c.company_id,
+    4200, 2500, 11.0000,
+    'ACR', '2022-09-01', '2026-08-31', 'PARTIALLY_SOLD'
+FROM project p, company c
+WHERE p.name = 'Punjab Wind Energy Project'
+AND c.registration_number = 'EFL-003';
+
 -- 6. Users (password is 'password123' -- we will hash this properly later)
+-- Link ADMIN user to platform admin company, not a trading company
 INSERT INTO users (company_id, email, password, role)
 SELECT company_id, 'admin@greenearth.com', 'password123', 'ADMIN'
-FROM company WHERE registration_number = 'GEI-001';
+FROM company WHERE registration_number = 'ADMIN-000';
 
 INSERT INTO users (company_id, email, password, role)
 SELECT company_id, 'user@solarwave.com', 'password123', 'USER'

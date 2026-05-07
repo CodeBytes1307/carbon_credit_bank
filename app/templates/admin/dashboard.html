@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard — Carbon Credit Bank{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Admin Dashboard</h1>
+            <p class="text-muted mb-0">System overview for {{ stats.today }}</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-3">
+        <div class="stat-card">
+            <div class="stat-label">Active Companies</div>
+            <div class="stat-value">{{ stats.active_companies }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Credits in Circulation</div>
+            <div class="stat-value">{{ stats.credits_in_circulation }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Transaction Volume</div>
+            <div class="stat-value">${{ "%.2f"|format(stats.total_volume|float) }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Credits Retired</div>
+            <div class="stat-value">{{ stats.credits_retired }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Transactions Today</div>
+            <div class="stat-value">{{ stats.txns_today }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Role</div>
+            <div class="stat-value" style="font-size:1.125rem;"><span class="badge badge-info">ADMIN</span></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

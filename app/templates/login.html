@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign in — Carbon Credit Bank{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-icon">🌱</div>
+    <h2 class="text-center">Welcome back</h2>
+    <p class="text-center" style="color:var(--gray-500); margin-top:.25rem;">Sign in to your Carbon Bank account</p>
+
+    {% if error %}
+    <div class="alert alert-error" style="margin-top:1.5rem;">
+        <strong>Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" required placeholder="you@company.com" autocomplete="email">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required placeholder="••••••••" autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Sign in</button>
+    </form>
+</div>
+{% endblock %}

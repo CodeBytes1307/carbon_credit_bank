@@ -3,17 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carbon Credit Bank</title>
+    <meta name="description" content="Carbon Credit Bank - Modern Carbon Trading Platform">
+    <title>{% block title %}Carbon Credit Bank{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/dashboard">Dashboard</a>
-    </nav>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
+<nav>
+    <a href="/">Carbon Bank</a>
+    <a href="/" {% if request.endpoint == 'index' %}aria-current="page"{% endif %}>Home</a>
+
+    {% if session.user_id %}
+        {% if session.role == 'ADMIN' %}
+            <a href="{{ url_for('admin.dashboard') }}"        {% if request.endpoint == 'admin.dashboard' %}aria-current="page"{% endif %}>Dashboard</a>
+            <a href="{{ url_for('admin.companies') }}"        {% if request.endpoint == 'admin.companies' %}aria-current="page"{% endif %}>Companies</a>
+            <a href="{{ url_for('admin.all_transactions') }}" {% if request.endpoint == 'admin.all_transactions' %}aria-current="page"{% endif %}>Transactions</a>
+            <a href="{{ url_for('admin.batches') }}"          {% if request.endpoint == 'admin.batches' %}aria-current="page"{% endif %}>Batches</a>
+            <a href="{{ url_for('admin.issue_credits') }}"    {% if request.endpoint == 'admin.issue_credits' %}aria-current="page"{% endif %}>Issue</a>
+            <a href="{{ url_for('admin.reports') }}"          {% if request.endpoint == 'admin.reports' %}aria-current="page"{% endif %}>Reports</a>
+            <span>Admin</span>
+        {% else %}
+            <a href="{{ url_for('user.dashboard') }}"     {% if request.endpoint == 'user.dashboard' %}aria-current="page"{% endif %}>Dashboard</a>
+            <a href="{{ url_for('user.portfolio') }}"     {% if request.endpoint == 'user.portfolio' %}aria-current="page"{% endif %}>Portfolio</a>
+            <a href="{{ url_for('user.buy') }}"           {% if request.endpoint == 'user.buy' %}aria-current="page"{% endif %}>Buy</a>
+            <a href="{{ url_for('user.sell') }}"          {% if request.endpoint == 'user.sell' %}aria-current="page"{% endif %}>Sell</a>
+            <a href="{{ url_for('user.transactions') }}"  {% if request.endpoint == 'user.transactions' %}aria-current="page"{% endif %}>Transactions</a>
+            <a href="{{ url_for('user.retire') }}"        {% if request.endpoint == 'user.retire' %}aria-current="page"{% endif %}>Retire</a>
+            <span>{{ session.company_name }}</span>
+        {% endif %}
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+    {% else %}
+        <a href="{{ url_for('auth.login') }}">Login</a>
+    {% endif %}
+</nav>
+
+<main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{% if category == 'error' %}error{% else %}{{ category }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</main>
+
 </body>
 </html>
